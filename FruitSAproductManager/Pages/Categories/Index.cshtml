@@ -1,0 +1,35 @@
+﻿@page
+@model FruitSAproductManager.Pages.Categories.IndexModel
+
+<div class="card">
+    <div class="card-header">
+        <h1>Categories</h1>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category Code</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model.Categories)
+                {
+                    <tr>
+                        <td>@category.Name</td>
+                        <td>@category.CategoryCode</td>
+                        <td>@category.IsActive</td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@category.CategoryId" class="btn btn-warning">Edit</a>
+                            @* <a asp-page="./Delete" asp-route-id="@category.Id" class="btn btn-danger">Delete</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-page="./Create" class="btn btn-primary">Add New Category</a>
+    </div>
+</div>

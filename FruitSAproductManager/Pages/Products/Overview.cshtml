@@ -1,0 +1,57 @@
+﻿@page
+@model FruitSAproductManager.Pages.Products.OverviewModel
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>Products</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Code</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>@item.ProductCode</td>
+                <td>@item.Name</td>
+                <td>@item.CategoryName</td>
+                <td>@item.Price</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination">
+    <ul class="pagination">
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" asp-page="./Overview" asp-route-pageNumber="@(Model.CurrentPage - 1)">Previous</a>
+        </li>
+        @for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+        {
+            <li class="page-item @(Model.CurrentPage == pageNum ? "active" : "")">
+                <a class="page-link" asp-page="./Overview" asp-route-pageNumber="@pageNum">@pageNum</a>
+            </li>
+        }
+        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" asp-page="./Overview" asp-route-pageNumber="@(Model.CurrentPage + 1)">Next</a>
+        </li>
+    </ul>
+    <a class="btn btn-success" asp-page-handler="Download">Download Products</a>
+</div>
+
+
+<a asp-page="./Create" class="btn btn-primary">Add Product</a>

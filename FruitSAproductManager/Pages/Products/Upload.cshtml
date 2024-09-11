@@ -1,0 +1,10 @@
+﻿@page
+@model FruitSAproductManager.Pages.Products.UploadModel
+
+<h2>Upload Products via Excel</h2>
+
+<form asp-page-handler="Upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx" />
+    <button type="submit" class="btn btn-primary">Upload Excel</button>
+</form>
+

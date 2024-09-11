@@ -1,0 +1,96 @@
+﻿@page
+@model FruitSAproductManager.Pages.Categories.EditModel
+
+<div class="card">
+    <div class="card-header">
+        <h1>Edit Category</h1>
+    </div>
+    <div class="card-body">
+        <form method="post" id="editFrm">
+            <div class="col-md-6" hidden>
+                    <div class="form-group">
+                        <input asp-for="Category.CategoryId" class="form-control" hidden />
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Category.Name" class="control-label"></label>
+                        <input asp-for="Category.Name" class="form-control" />
+                        <span asp-validation-for="Category.Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Category.CategoryCode" class="control-label">Category Code</label>
+                        <input asp-for="Category.CategoryCode" class="form-control" />
+                        <span asp-validation-for="Category.CategoryCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="iscategoryactive-container" class="form-group">
+                        <label class="control-label lbl-chk">
+                            Active
+                            <input type="checkbox" name="activeCategory" class="control-label custom-control" />
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+<a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectedCategoryID = @Model.Category.CategoryId;
+
+            fetch(`?handler=IsActiveByID&id=${selectedCategoryID}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.isActive !== undefined) {
+                    var checkbox = document.querySelector('input[name="activeCategory"]');
+                    checkbox.checked = data.isActive; 
+                    if (checkbox.checked) {
+                      checkbox.classList.add("custom-control-checked");
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error: ', error);
+            });
+
+            $('#editFrm').validate({
+                rules: {
+                    'Category.Name': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'Category.CategoryCode': {
+                        required: true,
+                        pattern: /^[A-Z]{3}[0-9]{3}$/
+                    }
+                },
+                messages: {
+                    'Category.Name': "Please enter a Name (at least 5 characters)",
+                    'Category.CategoryCode': "Please enter a valid Category Code"
+                },
+                errorELement: 'span',
+                errorPlacement: function (error, element) {
+                    error.css('color', '#03A9F4');
+                    error.insertAfter(element);
+                }
+            });
+        })
+    </script>
+}

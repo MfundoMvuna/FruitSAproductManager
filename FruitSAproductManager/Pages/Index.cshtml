@@ -1,0 +1,85 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container">
+    <h1 class="text-center">Welcome to the Product Management System</h1>
+
+    <div class="row">
+        <!-- First Row of Cards -->
+        <div class="col-md-6 mb-4">
+            <a href="/Categories/Index" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Manage Categories</h4>
+                    <p class="card-text">View, add, and edit product categories.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <a href="/Products/Overview" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Manage Products</h4>
+                    <p class="card-text">View, add, edit, and delete products.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Second Row: Wide Card -->
+        <div class="col-md-12 mb-4">
+            <a href="/Products/ImportExport" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Import and Export Products</h4>
+                    <p class="card-text">Upload and download products using Excel spreadsheets.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Third Row of Cards -->
+        <div class="col-md-6 mb-4">
+            <a href="/HowTo/Index" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h4 class="card-title">How-To Guides</h4>
+                    <p class="card-text">Access guides on how to use the system effectively.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <a href="/OtherFeature/Index" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Other Feature</h4>
+                    <p class="card-text">Description of another feature or function.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        color: #4CAF50;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-0.5rem);
+        box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.2);
+        color: #ffc107;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .card-title {
+        margin-bottom: 1rem;
+    }
+</style>
