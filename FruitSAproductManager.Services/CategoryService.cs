@@ -39,6 +39,18 @@ namespace FruitSAproductManager.Services
             _context.Entry(category).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
+        {
+            return await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
+        }
+
+        public async Task UpdateProductsAsync(List<Product> products)
+        {
+            _context.Products.UpdateRange(products);
+            await _context.SaveChangesAsync();
+        }
+
     }
 
 }

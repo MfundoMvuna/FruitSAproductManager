@@ -29,24 +29,44 @@ namespace FruitSAproductManager.Pages.Products
             {
                 using (var stream = new MemoryStream())
                 {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
                     await file.CopyToAsync(stream);
                     using (var package = new ExcelPackage(stream))
                     {
                         var worksheet = package.Workbook.Worksheets[0];
                         var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++) // Assuming row 1 is the header
+                        for (int row = 2; row <= rowCount; row++)
                         {
-                            var product = new Product
-                            {
-                                ProductCode = worksheet.Cells[row, 1].Text,
-                                Name = worksheet.Cells[row, 2].Text,
-                                CategoryName = worksheet.Cells[row, 3].Text,
-                                Price = decimal.Parse(worksheet.Cells[row, 4].Text)
-                            };
+                            var productCode = worksheet.Cells[row, 2].Text; 
+                            var name = worksheet.Cells[row, 3].Text;  
+                            var description = worksheet.Cells[row, 4].Text;
+                            var categoryName = worksheet.Cells[row, 5].Text;
+                            var createdBy = worksheet.Cells[row, 11].Text;
+                            var categoryId = worksheet.Cells[row, 8].Text;
 
-                            // Save the product to the database
-                            await _productService.AddProductAsync(product);
+                            if (decimal.TryParse(worksheet.Cells[row, 6].Text, out decimal price) && int.TryParse(categoryId, out int parsedCategoryId))
+                            {
+                                var product = new Product
+                                {
+                                    ProductCode = productCode,
+                                    Name = name,
+                                    Description = description,
+                                    CategoryName = categoryName,
+                                    CreatedDate = DateTime.Now,
+                                    Price = price,
+                                    CategoryId = parsedCategoryId,
+                                    CreatedBy = createdBy
+                                };
+
+                                await _productService.AddProductAsync(product);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", $"Invalid price format at row {row}.");
+                                return Page();
+                            }
                         }
                     }
                 }

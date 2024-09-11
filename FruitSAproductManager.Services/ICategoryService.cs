@@ -15,5 +15,8 @@ namespace FruitSAproductManager.Services
         Task<Category?> GetCategoryByIdAsync(int categoryId);
         Task AddCategoryAsync(Category category);
         Task UpdateCategoryAsync(Category category);
+        Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId);
+        Task UpdateProductsAsync(List<Product> products);
+
     }
 }

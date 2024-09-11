@@ -12,10 +12,12 @@ namespace FruitSAproductManager.Pages.Products
     public class EditModel : PageModel
     {
         private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public EditModel(IProductService productService)
+        public EditModel(IProductService productService, ICategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
         [BindProperty]
@@ -63,14 +65,27 @@ namespace FruitSAproductManager.Pages.Products
                 }
             }
 
+            Product.CreatedBy = User.Identity.Name;
+            var selectedCategory = await _categoryService.GetCategoryByIdAsync(Product.CategoryId);
+            
+            if (selectedCategory != null)
+            {
+                Product.CategoryName = selectedCategory.Name;
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "The selected category does not exist.");
+                return Page();
+            }
+
+
             try
             {
                 await _productService.UpdateProductAsync(Product);
             }
             catch (Exception ex)
             {
-                // Handle exception as needed
-                return RedirectToPage("./Error"); // or some other error handling
+                return RedirectToPage("/Error"); 
             }
 
             return RedirectToPage("./Overview");

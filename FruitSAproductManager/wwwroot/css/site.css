@@ -159,3 +159,24 @@ img#productImage {
         .custom-control:checked::before {
             transform: translateX(1rem);
         }
+.card {
+    color: #4CAF50;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-0.5rem);
+        box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.2);
+        color: #ffc107;
+    }
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-title {
+    margin-bottom: 1rem;
+}

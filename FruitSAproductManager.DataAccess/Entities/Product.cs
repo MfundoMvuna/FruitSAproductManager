@@ -29,7 +29,7 @@ namespace FruitSAproductManager.DataAccess.Entities
         [Required]
         [Range(0, 100000, ErrorMessage = "The Price must be between 0 and 100,000.")]
         public decimal Price { get; set; }
-        public byte[] ImageUrl { get; set; }
+        public byte[]? ImageUrl { get; set; }
 
 
         public int CategoryId { get; set; }

@@ -27,15 +27,12 @@ namespace FruitSAproductManager.Pages.Products
         {
             var pageSize = 10;
 
-            // Retrieve the products list from the service
             var productList = await _productService.GetAllProductsAsync();
 
-            // Calculate total count and total pages
             var count = productList.Count;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             CurrentPage = pageNumber ?? 1;
 
-            // Apply pagination to the in-memory list
             var paginatedProducts = productList
                 .Skip((CurrentPage - 1) * pageSize)
                 .Take(pageSize)
