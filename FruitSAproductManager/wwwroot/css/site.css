@@ -180,3 +180,7 @@ img#productImage {
 .card-title {
     margin-bottom: 1rem;
 }
+
+.pagination {
+    justify-content: space-between;
+}

@@ -1,16 +1,15 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using FruitSAproductManager.DataAccess.Entities;
 using FruitSAproductManager.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FruitSAproductManager.Pages.Products
 {
-    public class DeleteModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly IProductService _productService;
 
-        public DeleteModel(IProductService productService)
+        public DetailsModel(IProductService productService)
         {
             _productService = productService;
         }
@@ -18,16 +17,17 @@ namespace FruitSAproductManager.Pages.Products
         [BindProperty]
         public Product Product { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task OnGetAsync(int id)
         {
             Product = await _productService.GetProductByIdAsync(id);
 
             if (Product == null)
             {
-                return NotFound();
+                 NotFound();
+                return;
             }
 
-            return Page();
+            Page();
         }
 
         public async Task<IActionResult> OnGetProductImageAsync(int id)
@@ -43,16 +43,5 @@ namespace FruitSAproductManager.Pages.Products
             return new JsonResult(new { base64Image });
         }
 
-        public async Task<IActionResult> OnPostAsync(int id)
-        {
-            var product = await _productService.GetProductByIdAsync(id);
-
-            if (product != null)
-            {
-                await _productService.DeleteProductAsync(id);
-            }
-
-            return RedirectToPage("./Overview");
-        }
     }
 }
