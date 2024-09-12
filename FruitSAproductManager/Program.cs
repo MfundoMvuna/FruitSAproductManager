@@ -3,6 +3,7 @@ using FruitSAproductManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using FruitSAproductManager.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
