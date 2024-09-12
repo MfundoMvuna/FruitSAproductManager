@@ -184,3 +184,24 @@ img#productImage {
 .pagination {
     justify-content: space-between;
 }
+
+.description {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.additional-info {
+    margin-top: 2rem;
+}
+
+    .additional-info img {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        margin: 0.5rem 0;
+    }
+
+    .additional-info i {
+        color: #28a745;
+        margin: 1rem 0;
+    }
