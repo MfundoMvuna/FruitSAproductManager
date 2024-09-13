@@ -27,6 +27,10 @@ namespace FruitSAproductManager.Pages.Categories
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
             Category.IsActive = Request.Form["activeCategory"].Contains("on");
 
