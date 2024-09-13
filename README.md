@@ -36,7 +36,7 @@ Bash -
 
 cd FruitSAproductManager 
 
- 
+ -------------------------
 
 Configuration 
 
@@ -54,28 +54,31 @@ Json:
 
 } 
 
+-------------------------
+
 2. Apply Migrations 
 
-To set up the database schema, apply the Entity Framework Core migrations for both contexts: the application database and the identity database.
+To set up the database schema, apply the Entity Framework Core migrations for the (ApplicationDbContext) context: the application database.
  - Apply Migrations to the Application Database Context
 The application context is responsible for managing the app's data (e.g., Products, Categories). Run the following command to apply the migrations for this context:
-dotnet CLI:
+
+- dotnet CLI:
 Bash: 
 dotnet ef database update --context ApplicationDbContext
 
-PMC (Package Manager Console):
+- PMC (Package Manager Console):
 powershell:
 Update-Database -Context ApplicationDbContext
 
 This will apply the migrations and create the database structure based on the models. 
 
- 
+ --
 
 3. Seed Data (Optional) 
 
 If you'd like to seed the database with initial data, you can modify the SeedData class in the project to include your preferred data. Then run the application, and the seed logic will populate the tables. 
 
- 
+ -------------------------
 
 4. Configure SendGrid (For Email Functionality)  - Updated - not in appsettings.json
 
@@ -97,6 +100,8 @@ If you'd like to seed the database with initial data, you can modify the SeedDat
 
   3 Ensure that the EmailSender service is registered in the DI container. For example:
      - builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+-------------------------
 
 5. Running the Application 
 
