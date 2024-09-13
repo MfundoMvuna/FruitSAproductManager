@@ -21,7 +21,20 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddRazorPages();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login"; // Path to login page
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
+
+//builder.Services.AddRazorPages();
+
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/"); // Authorize all pages
+});
+
 
 var app = builder.Build();
 
@@ -42,6 +55,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
