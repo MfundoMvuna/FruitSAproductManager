@@ -35,8 +35,15 @@ namespace FruitSAproductManager.Services
 
         public async Task UpdateProductAsync(Product product)
         {
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Products.Update(product);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public async Task DeleteProductAsync(int id)
@@ -86,8 +93,11 @@ namespace FruitSAproductManager.Services
 
         public async Task AddProductsAsync(List<Product> products)
         {
-            _context.Products.AddRange(products);
-            await _context.SaveChangesAsync();
+            if (products != null && products.Any())
+            {
+                _context.Products.AddRange(products); 
+                await _context.SaveChangesAsync();
+            }
         }
 
     }

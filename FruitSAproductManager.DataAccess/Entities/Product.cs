@@ -14,11 +14,12 @@ namespace FruitSAproductManager.DataAccess.Entities
         public int ProductId { get; set; }
 
         [Required(ErrorMessage = "The Product Code is required.")]
-        [StringLength(50, ErrorMessage = "The Product Code cannot exceed 50 characters.")]
+        [StringLength(10, ErrorMessage = "The Product Code cannot exceed 10 characters.")]
+        [RegularExpression(@"^\d{6}-\d{3}$", ErrorMessage = "Product Code must be in the format yyyyMM-###")]
         public string ProductCode { get; set; }
 
-        [Required(ErrorMessage = "The Name is required.")]
-        [StringLength(100, ErrorMessage = "The Name cannot exceed 100 characters.")]
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Name must be at least 3 characters long")]
         public string Name { get; set; }
         public string? Description { get; set; }
 
@@ -26,8 +27,8 @@ namespace FruitSAproductManager.DataAccess.Entities
         [StringLength(100, ErrorMessage = "The Category name cannot exceed 100 characters.")]
         public string CategoryName { get; set; }
 
-        [Required]
-        [Range(0, 100000, ErrorMessage = "The Price must be between 0 and 100,000.")]
+        [Required(ErrorMessage = "Price is required")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be a positive number")]
         public decimal Price { get; set; }
         public byte[]? ImageUrl { get; set; }
 
@@ -38,5 +39,8 @@ namespace FruitSAproductManager.DataAccess.Entities
 
         public DateTime CreatedDate { get; set; }
         public string? CreatedBy { get; set; }
+
+        [Timestamp]  // Concurrency token
+        public byte[]? RowVersion { get; set; }
     }
 }

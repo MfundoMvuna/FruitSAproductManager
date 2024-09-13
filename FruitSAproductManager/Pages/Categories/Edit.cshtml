@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h1>Edit Category</h1>
+        <h1>Edit @Model.Category.Name</h1>
     </div>
     <div class="card-body">
         <form method="post" id="editFrm">
@@ -82,8 +82,14 @@
                     }
                 },
                 messages: {
-                    'Category.Name': "Please enter a Name (at least 5 characters)",
-                    'Category.CategoryCode': "Please enter a valid Category Code"
+                    'Category.Name': {
+                        required: "Please enter a Name",
+                        minlength: "Name must be at least 3 characters long"
+                    },
+                    'Category.CategoryCode': {
+                        required: "Please enter a Category Code",
+                        pattern: "Category Code must be in the format ABC123"
+                    }
                 },
                 errorELement: 'span',
                 errorPlacement: function (error, element) {

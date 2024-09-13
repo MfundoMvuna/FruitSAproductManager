@@ -44,6 +44,10 @@ namespace FruitSAproductManager.DataAccess.Context
             modelBuilder.Entity<Category>()
                 .HasIndex(c => c.CategoryCode)
                 .IsUnique();
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.RowVersion)
+                .IsRowVersion();
         }
     }
 }

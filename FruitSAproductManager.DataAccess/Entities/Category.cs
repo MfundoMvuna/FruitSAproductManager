@@ -24,6 +24,9 @@ namespace FruitSAproductManager.DataAccess.Entities
         [Required(ErrorMessage = "The IsActive field is required.")]
         public bool IsActive { get; set; }
 
+        [Timestamp]  // Concurrency token
+        public byte[]? RowVersion { get; set; }
+
 
         public ICollection<Product>? Products { get; set; }
     }
