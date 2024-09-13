@@ -2,9 +2,13 @@
 
 FruitSA Product Manager 
 
+-------------------------
+
 Overview 
 
 This is a .NET 7-based web application for managing products, categories, and other relevant features. It includes functionality such as image uploading, category management, and product code auto-generation. 
+
+-------------------------
 
 Prerequisites 
 
@@ -24,17 +28,12 @@ Clone the Repository
 
 To clone the project, run the following command in your terminal: 
 
-Bash -  
+ - Bash: git clone https://github.com/MfundoMvuna/FruitSAproductManager.git 
 
-git clone https://github.com/MfundoMvuna/FruitSAproductManager.git 
-
- 
 
 Navigate to the project directory: 
 
-Bash - 
-
-cd FruitSAproductManager 
+ - Bash: cd FruitSAproductManager 
 
  -------------------------
 
@@ -62,13 +61,9 @@ To set up the database schema, apply the Entity Framework Core migrations for th
  - Apply Migrations to the Application Database Context
 The application context is responsible for managing the app's data (e.g., Products, Categories). Run the following command to apply the migrations for this context:
 
-- dotnet CLI:
-Bash: 
-dotnet ef database update --context ApplicationDbContext
+- dotnet CLI: Bash: dotnet ef database update --context ApplicationDbContext
 
-- PMC (Package Manager Console):
-powershell:
-Update-Database -Context ApplicationDbContext
+- PMC (Package Manager Console): powershell: Update-Database -Context ApplicationDbContext
 
 This will apply the migrations and create the database structure based on the models. 
 
@@ -93,8 +88,7 @@ If you'd like to seed the database with initial data, you can modify the SeedDat
 
      - Run the following command to store your SendGrid API key:
 
-     - bash:
-     - dotnet user-secrets set "SendGrid:ApiKey" "Your_SendGrid_API_Key"
+     - bash: dotnet user-secrets set "SendGrid:ApiKey" "Your_SendGrid_API_Key"
 
      - This command securely stores your API key in your local user secrets store, which is not included in the source code or configuration files.
 
@@ -107,15 +101,12 @@ If you'd like to seed the database with initial data, you can modify the SeedDat
 
 Once everything is configured, you can run the application with: 
 
-Bash: 
-
-dotnet run 
-
- 
-
+Bash: dotnet run 
  
 
 Alternatively, open the project in Visual Studio and press F5 to build and run. 
+
+-------------------------
 
 Features 
 
@@ -129,9 +120,7 @@ Image Upload: Upload and update product images.
 
 Email Notifications: Send email notifications using SendGrid. 
 
- 
-
- 
+-------------------------
 
 Troubleshooting 
 
@@ -143,9 +132,13 @@ Ensure migrations have been applied correctly by running dotnet ef database upda
 
 Ensure that the SendGrid API key is valid. 
 
+-------------------------
+
 Contributions 
 
 If you'd like to contribute to this project, feel free to submit issues or pull requests. Feedback and suggestions are always welcome! 
+
+-------------------------
 
 License 
 
