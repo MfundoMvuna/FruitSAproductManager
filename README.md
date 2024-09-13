@@ -72,7 +72,7 @@ Update-Database -Context ApplicationDbContext
 
 This will apply the migrations and create the database structure based on the models. 
 
- --
+-------------------------
 
 3. Seed Data (Optional) 
 
