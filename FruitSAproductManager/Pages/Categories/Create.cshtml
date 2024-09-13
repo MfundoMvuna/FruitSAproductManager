@@ -39,6 +39,7 @@
 </div>
 
 <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -54,15 +55,21 @@
                     }
                 },
                 messages: {
-                    'Category.Name': "Please enter a Name (at least 5 characters)",
-                    'Category.CategoryCode': "Please enter a valid Category Code"
+                    'Category.Name': {
+                        required: "Please enter a Name",
+                        minlength: "Name must be at least 3 characters long"
+                    },
+                    'Category.CategoryCode': {
+                        required: "Please enter a Category Code",
+                        pattern: "Category Code must be in the format ABC123"
+                    }
                 },
-                errorELement: 'span',
+                errorElement: 'span',
                 errorPlacement: function (error, element) {
                     error.css('color', '#03A9F4');
                     error.insertAfter(element);
                 }
             });
-        })
+        });
     </script>
 }

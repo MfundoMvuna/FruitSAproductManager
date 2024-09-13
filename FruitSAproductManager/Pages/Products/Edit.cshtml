@@ -2,61 +2,81 @@
 @model FruitSAproductManager.Pages.Products.EditModel
 
 <div class="container">
-    <h1>Edit Product</h1>
-
-    <form method="post" enctype="multipart/form-data">
-        <input type="hidden" asp-for="Product.ProductId" />
-
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label asp-for="Product.ProductCode" class="control-label"></label>
-                <input asp-for="Product.ProductCode" class="form-control" />
-                <span asp-validation-for="Product.ProductCode" class="text-danger"></span>
+    <div class="card-header">
+        <h1>Edit @Model.Product.Name</h1>
+    </div>
+    <div class="card-body">
+        @if (!ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
             </div>
-            <div class="form-group col-md-6">
-                <label asp-for="Product.Name" class="control-label"></label>
-                <input asp-for="Product.Name" class="form-control" />
-                <span asp-validation-for="Product.Name" class="text-danger"></span>
+        }
+        <form method="post" enctype="multipart/form-data" id="editProductFrm">
+            <input type="hidden" asp-for="Product.ProductId" />
+            <input type="hidden" asp-for="Product.RowVersion" />
+            <input type="hidden" asp-for="Product.ImageUrl" />
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Product.ProductCode" class="control-label"></label>
+                    <input asp-for="Product.ProductCode" class="form-control" />
+                    <span asp-validation-for="Product.ProductCode" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Product.Name" class="control-label"></label>
+                    <input asp-for="Product.Name" class="form-control" />
+                    <span asp-validation-for="Product.Name" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-row">
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Product.Description" class="control-label"></label>
+                    <textarea asp-for="Product.Description" class="form-control" style="height: 44px;width: 320px;"></textarea>
+                    <span asp-validation-for="Product.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="margin-left: -2.9rem;">
+                    <label asp-for="Product.CategoryId" class="control-label">Category</label>
+                    <select asp-for="Product.CategoryId" class="form-control" asp-items="Model.CategoryList"></select>
+                    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Product.Price" class="control-label"></label>
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+            </div>
             <div class="form-group">
-                <label asp-for="Product.Description" class="control-label"></label>
-                <textarea asp-for="Product.Description" class="form-control" style="height: 44px;width: 320px;"></textarea>
-                <span asp-validation-for="Product.Description" class="text-danger"></span>
+                <label asp-for="Product.ImageUrl" class="control-label">Picture</label>
+                <img id="productImage" src="" alt="Product Image" style="max-width: 400px; display: none;" />
             </div>
-            <div class="form-group" style="margin-left:  -2.9rem;">
-                <label asp-for="Product.CategoryId" class="control-label">Category</label>
-                <select asp-for="Product.CategoryId" class="form-control" asp-items="Model.CategoryList"></select>
-                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label asp-for="Product.Price" class="control-label"></label>
-                <input asp-for="Product.Price" class="form-control" />
-                <span asp-validation-for="Product.Price" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Product.ImageUrl" class="control-label">Picture</label>
-            <img id="productImage" src="" alt="Product Image" style="max-width: 400px; display: none;" />
-        </div>
 
-        <div class="form-group">
-            <label asp-for="ImageFile" class="control-label">Update picture</label>
-            <input type="file" asp-for="ImageFile" class="form-control" />
-        </div>
-
-        <div class="form-row">
-            <div class="col-md-12" style="display: flex;justify-content: space-between;">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a asp-page="./Overview" class="btn btn-secondary ml-2">Back to List</a>
+            <div class="form-group">
+                <button type="button" id="replaceImageButton" class="btn btn-link">
+                    <i class="fa fa-refresh"></i> Replace Image
+                </button>
+                <div id="fileUploadField" style="display: none;">
+                    <label asp-for="ImageFile" class="control-label">Update picture</label>
+                    <input type="file" asp-for="ImageFile" class="form-control" />
+                </div>
             </div>
-        </div>
-    </form>
+
+            <div class="form-row">
+                <div class="col-md-12" style="display: flex;justify-content: space-between;">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-page="./Overview" class="btn btn-secondary ml-2">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-
 
 @section Scripts {
     <script>
@@ -69,20 +89,63 @@
                     'Content-Type': 'application/json'
                 }
             })
-                .then(response => response.json()) 
+                .then(response => response.json())
                 .then(data => {
                     if (data && data.base64Image) {
                         const imgElement = document.getElementById('productImage');
                         imgElement.src = `data:image/jpeg;base64,${data.base64Image}`;
                         imgElement.style.display = 'block';
-                    }
-                    else {
+                    } else {
                         console.log(data);
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching the image:', error);
                 });
+
+            $('#editProductFrm').validate({
+                rules: {
+                    'Product.Name': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'Product.Price': {
+                        required: true,
+                        number: true,
+                        min: 0.01
+                    },
+                    'Product.ProductCode': {
+                        required: true,
+                        pattern: /^[0-9]{6}-[0-9]{3}$/
+                    }
+                },
+                messages: {
+                    'Product.Name': {
+                        required: "Please enter a Name",
+                        minlength: "Name must be at least 3 characters long"
+                    },
+                    'Product.Price': {
+                        required: "Please enter a Price",
+                        number: "Please enter a valid number",
+                        min: "Price must be a positive number"
+                    },
+                    'Product.ProductCode': {
+                        required: "Please enter a product code",
+                        pattern: "Product code must be in the format yyyyMM-###"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.css('color', '#03A9F4');
+                    error.insertAfter(element);
+                }
+            });
+
+            document.getElementById("replaceImageButton").addEventListener("click", function () {
+                var fileUploadField = document.getElementById("fileUploadField");
+                fileUploadField.style.display = "block"; // Show the file upload field
+                this.style.display = "none";  // Hide the "Replace Image" button
+            });
         });
     </script>
 }

@@ -6,7 +6,7 @@
         <h1>Create Product</h1>
     </div>
     <div class="card-body">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" id="createProductFrm">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label asp-for="Product.Name" class="control-label"></label>
@@ -44,3 +44,38 @@
 </div>
 
 <a asp-page="./Overview" class="btn btn-secondary mt-3">Back to List</a>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#createProductFrm').validate({
+                rules: {
+                    'Product.Name': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'Product.Price': {
+                        required: true,
+                        number: true,
+                        min: 0.01
+                    }
+                },
+                messages: {
+                    'Product.Name': {
+                        required: "Please enter a Name",
+                        minlength: "Name must be at least 3 characters long"
+                    },
+                    'Product.Price': {
+                        required: "Please enter a Price",
+                        number: "Please enter a valid number",
+                        min: "Price must be a positive number"
+                    }
+                },
+                errorELement: 'span',
+                errorPlacement: function (error, element) {
+                    error.css('color', '#03A9F4');
+                    error.insertAfter(element);
+                }
+            });
+        })
+    </script>
+}

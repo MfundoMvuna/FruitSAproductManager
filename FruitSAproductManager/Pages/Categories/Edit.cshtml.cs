@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FruitSAproductManager.DataAccess.Entities;
 using FruitSAproductManager.Services;
+using Microsoft.EntityFrameworkCore;
+using SendGrid.Helpers.Mail;
 
 namespace FruitSAproductManager.Pages.Categories
 {
@@ -40,8 +42,14 @@ namespace FruitSAproductManager.Pages.Categories
 
             return new JsonResult(new { IsActive = category.IsActive });
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             var categorysActiveId = Category.CategoryId;
 
             var categoryToUpdate = await _categoryService.GetCategoryByIdAsync(categorysActiveId);
@@ -51,6 +59,7 @@ namespace FruitSAproductManager.Pages.Categories
                 return NotFound();
             }
 
+            // Update category fields
             categoryToUpdate.Name = Category.Name;
             categoryToUpdate.CategoryCode = Category.CategoryCode;
             categoryToUpdate.IsActive = Request.Form["activeCategory"].Contains("on");
@@ -63,12 +72,34 @@ namespace FruitSAproductManager.Pages.Categories
                 product.CategoryName = Category.Name; // Update the CategoryName field in the Product
             }
 
-            // Update category and products in the database
-            await _categoryService.UpdateCategoryAsync(categoryToUpdate);
-            await _categoryService.UpdateProductsAsync(productsToUpdate);
+            try
+            {
+                // Update category and products in the database
+                await _categoryService.UpdateCategoryAsync(categoryToUpdate);
+                await _categoryService.UpdateProductsAsync(productsToUpdate);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // Reload the entity from the database
+                var databaseCategory = await _categoryService.GetCategoryByIdAsync(categorysActiveId);
+
+                if (databaseCategory == null)
+                {
+                    return NotFound();
+                }
+
+                // Add an error message to display to the user
+                ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                    + "was modified by another user after you. The changes were not saved.");
+
+                // Optionally, you could merge database values with user input here if you want
+                // to allow users to decide which values to keep.
+
+                Category = databaseCategory; // Reload the category with current database values
+                return Page(); // Redisplay the form
+            }
 
             return RedirectToPage("./Index");
         }
-
     }
 }

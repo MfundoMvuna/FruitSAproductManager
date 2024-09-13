@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h1>View Product</h1>
+        <h1>View @Model.Product.Name</h1>
     </div>
     <div class="card-body">
         <form method="post">
@@ -32,7 +32,7 @@
                     <input asp-for="Product.Price" readonly class="form-control" />
                 </div>
                 <div class="form-group col-md-6">
-                    <label asp-for="Product.ImageUrl" class="control-label"></label>
+                    <label asp-for="Product.ImageUrl" class="control-label">Picture</label>
                     <img id="productImage" src="" alt="Product Image" class="img-thumbnail" style="max-width: 300px; display: none;" />
                 </div>
             </div>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FruitSAproductManager.DataAccess.Entities;
 using FruitSAproductManager.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace FruitSAproductManager.Pages.Products
 {
@@ -64,6 +65,10 @@ namespace FruitSAproductManager.Pages.Products
                     Product.ImageUrl = memoryStream.ToArray();
                 }
             }
+            else
+            {
+                Product.ImageUrl = Product.ImageUrl;
+            }
 
             Product.CreatedBy = User.Identity.Name;
             var selectedCategory = await _categoryService.GetCategoryByIdAsync(Product.CategoryId);
@@ -78,10 +83,14 @@ namespace FruitSAproductManager.Pages.Products
                 return Page();
             }
 
-
             try
             {
                 await _productService.UpdateProductAsync(Product);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                ModelState.AddModelError(string.Empty, "The product was updated by another user. Please reload and try again.");
+                return Page();
             }
             catch (Exception ex)
             {

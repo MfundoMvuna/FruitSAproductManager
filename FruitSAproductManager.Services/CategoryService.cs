@@ -36,8 +36,24 @@ namespace FruitSAproductManager.Services
 
         public async Task UpdateCategoryAsync(Category category)
         {
-            _context.Entry(category).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Entry(category).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await CategoryExists(category.CategoryId))
+                {
+                    throw new KeyNotFoundException($"Category with ID {category.CategoryId} not found.");
+                }
+                else
+                {
+                    // Handle concurrency exception
+                    throw new DbUpdateConcurrencyException("The record you attempted to edit was modified by another user after you got the original value.");
+                }
+            }
+
         }
 
         public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
@@ -51,6 +67,10 @@ namespace FruitSAproductManager.Services
             await _context.SaveChangesAsync();
         }
 
+        private async Task<bool> CategoryExists(int categoryId)
+        {
+            return await _context.Categories.AnyAsync(e => e.CategoryId == categoryId);
+        }
     }
 
 }
