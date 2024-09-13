@@ -56,13 +56,16 @@ Json:
 
 2. Apply Migrations 
 
-Open a terminal in the project directory and apply the Entity Framework Core migrations to create the necessary database tables: 
-
+To set up the database schema, apply the Entity Framework Core migrations for both contexts: the application database and the identity database.
+ - Apply Migrations to the Application Database Context
+The application context is responsible for managing the app's data (e.g., Products, Categories). Run the following command to apply the migrations for this context:
+dotnet CLI:
 Bash: 
+dotnet ef database update --context ApplicationDbContext
 
-dotnet ef database update 
-
- 
+PMC (Package Manager Console):
+powershell:
+Update-Database -Context ApplicationDbContext
 
 This will apply the migrations and create the database structure based on the models. 
 
