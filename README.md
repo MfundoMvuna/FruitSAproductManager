@@ -74,21 +74,26 @@ If you'd like to seed the database with initial data, you can modify the SeedDat
 
  
 
-4. Configure SendGrid (For Email Functionality) 
+4. Configure SendGrid (For Email Functionality)  - Updated - not in appsettings.json
 
-To enable email functionality (e.g., password resets), set up your SendGrid API key: 
+    - To enable email functionality (e.g., password resets), follow these steps to configure SendGrid securely:
 
-Sign up at SendGrid and get your API key. 
+    1 Sign up at SendGrid and obtain your API key.
 
-In the appsettings.json, add your SendGrid API key as follows: 
+    2 Store your SendGrid API key securely:
 
-Json: 
+    - Using Visual Studio Secret Manager:
+     - Open a command prompt or terminal in the root directory of your project.
 
-"SendGrid": { 
+     - Run the following command to store your SendGrid API key:
 
-  "ApiKey": "Your_SendGrid_API_Key" 
+     - bash:
+     - dotnet user-secrets set "SendGrid:ApiKey" "Your_SendGrid_API_Key"
 
-} 
+     - This command securely stores your API key in your local user secrets store, which is not included in the source code or configuration files.
+
+  3 Ensure that the EmailSender service is registered in the DI container. For example:
+     - builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 5. Running the Application 
 
